@@ -29,7 +29,7 @@ class Leaf:
     body: str = ""
 
     def route_hint(self) -> str:
-        """路由提示：description 中的"何时选我 / 何时别选我"。"""
+        """路由提示：description 中的适用/不适用场景。"""
         return self.description
 
 
@@ -107,7 +107,7 @@ def discover_leaves(directory: Path = LEAVES_DIR) -> list[Leaf]:
 
 
 def route(intent: str, leaves: list[Leaf]) -> Leaf | None:
-    """意图路由（程序判定）：在 description 中找"何时选我"关键词。
+    """意图路由（程序判定）：在 description 中找"适用场景"关键词。
 
     第一版为确定性关键词匹配（零幻觉）；后续可升级为 LLM 路由（动态路径）。
     """
@@ -117,7 +117,7 @@ def route(intent: str, leaves: list[Leaf]) -> Leaf | None:
     for leaf in leaves:
         hint = leaf.route_hint().casefold()
         score = 0
-        for token in ("何时选我", "产品决策", "方案", "prd", "评审", "需求", "优先级"):
+        for token in ("适用", "产品决策", "方案", "prd", "评审", "需求", "优先级"):
             if token in hint:
                 score += 1
         if intent_lower and any(k in intent_lower for k in ("方案", "prd", "评审", "需求", "取舍", "roadmap", "plan")):

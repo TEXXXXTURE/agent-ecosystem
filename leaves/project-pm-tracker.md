@@ -2,7 +2,7 @@
 name: project-pm-tracker
 type: leaf
 kind: 规则维护型
-description: "产品决策叶片：把想法、反馈、材料转化为有依据的产品判断、方案（pm_plan）、PRD、优先级、评审。何时选我：需求取舍、方案评审、PRD 起草、Roadmap 规划。何时别选我：纯执行、已定方案的技术实现、格式转换。"
+description: "产品决策叶片：把想法、反馈、材料转化为有依据的产品判断、方案（pm_plan）、PRD、优先级、评审。适用场景：需求取舍、方案评审、PRD 起草、Roadmap 规划。不适用场景：纯执行、已定方案的技术实现、格式转换。"
 input_contract: ["project_context", "requirement_material"]
 output_contract: ["pm_plan"]
 tools: []

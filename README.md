@@ -25,16 +25,16 @@ cd agent-ecosystem
 pip install -r requirements.txt
 
 # 配置模型 API key（编排层调用 LLM 的入口）
-# Windows: setx ARK_API_KEY_PI "你的key"
-# macOS/Linux: export ARK_API_KEY_PI="你的key"
+# Windows: setx ARK_API_KEY_PI "<key>"
+# macOS/Linux: export ARK_API_KEY_PI="<key>"
 
 # CLI 驱动一次闭环
 python -m orchestrator.closure "任务描述"
 ```
 
-### 档位三 · 接入自家 Agent 集群
+### 档位三 · 接入宿主集群
 
-宿主 Agent（豆包 / Munder / Hermes 等）读取 `AGENTS.md` + `docs/soul.md` 获得人设与规则，契约校验走 `contracts/`（机器强制），叶片按 `leaves/` 指针挂载。详见 [docs/soul.md](docs/soul.md)。
+宿主 Agent（豆包 / Munder+Hermes / DeepSeek Harness / Claude Code / Codex / CrewAI 等，任选，不绑定任何特定实现）读取 `AGENTS.md` + `docs/soul.md` 获得人设与规则，契约校验走 `contracts/`（机器强制），叶片按 `leaves/` 指针挂载。详见 [docs/soul.md](docs/soul.md)。
 
 ## 目录结构
 
