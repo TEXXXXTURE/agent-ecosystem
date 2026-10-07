@@ -1,0 +1,8 @@
+# 核心依赖（测试与校验器必需）
+jsonschema>=4.20
+PyYAML>=6.0
+pytest>=8.0
+
+# 生产底座（可选，编排层接 LLM 时使用 OpenAI Agents SDK）
+# openai-agents>=0.1
+# 模型接入：火山 ARK（OpenAI 兼容），环境变量 ARK_API_KEY_PI

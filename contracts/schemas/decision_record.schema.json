@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision_record",
+  "title": "决策记录",
+  "description": "owner 拍板（owner_gate resume）与关键决策的留痕（6 步闭环②）。",
+  "type": "object",
+  "required": ["schema_version", "id", "decision", "options", "rationale", "owner", "decided_at"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "decision_record@0.1" },
+    "id": { "type": "string", "minLength": 1 },
+    "decision": { "type": "string", "minLength": 1, "description": "owner 的一句话拍板结论" },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "consequence"],
+        "properties": {
+          "name": { "type": "string" },
+          "consequence": { "type": "string", "description": "该选项的后果/影响" }
+        }
+      },
+      "description": "备选与后果"
+    },
+    "rationale": { "type": "string" },
+    "owner": { "type": "string" },
+    "decided_at": { "type": "string", "format": "date-time" },
+    "related_plan_id": { "type": "string", "description": "关联的 pm_plan.id" }
+  }
+}

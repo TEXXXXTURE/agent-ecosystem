@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "failure_reason",
+  "title": "失败原因",
+  "description": "失败回流的结构化原因（6 步闭环⑤→③）。必须带原因回流，失败写记忆供下次参考。",
+  "type": "object",
+  "required": ["schema_version", "category", "code", "summary", "evidence", "retryable"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "failure_reason@0.1" },
+    "category": {
+      "enum": ["mechanical", "directional"],
+      "description": "两档分流：机器可检测→mechanical；其余→directional（升级 owner）"
+    },
+    "code": { "type": "string", "description": "机器可判定的错误码：test_failed / schema_invalid / exit_nonzero / param_missing / requirement_ambiguous / scope_change / tradeoff_conflict / other_directional" },
+    "summary": { "type": "string", "minLength": 1 },
+    "details": { "type": "string" },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "现场摘要：测试输出 / schema 错误 / 日志片段 / 来源引用"
+    },
+    "retryable": { "type": "boolean", "description": "带原因修复后是否可重试" },
+    "from_leaf": { "type": "string" },
+    "occurred_at": { "type": "string", "format": "date-time" }
+  }
+}

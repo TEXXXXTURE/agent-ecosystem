@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pm_plan",
+  "title": "PM 方案",
+  "description": "产品决策叶片（PM）的产出物。必须通过本 schema 校验才可进入 owner_gate（6 步闭环①→②）。",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "problem", "decision", "rationale", "acceptance_criteria", "owner", "created_at"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "pm_plan@0.1" },
+    "id": { "type": "string", "minLength": 1, "description": "方案唯一标识，如 pplan-20261008-001" },
+    "title": { "type": "string", "minLength": 1 },
+    "problem": {
+      "type": "object",
+      "required": ["statement", "impact", "constraints"],
+      "properties": {
+        "statement": { "type": "string", "minLength": 1, "description": "要解决什么问题" },
+        "impact": { "type": "string", "description": "影响谁/什么" },
+        "constraints": { "type": "array", "items": { "type": "string" }, "description": "哪些现状不能被改变" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": ["recommendation", "alternatives"],
+      "properties": {
+        "recommendation": { "type": "string", "minLength": 1, "description": "明确建议（方案）" },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "tradeoff"],
+            "properties": {
+              "name": { "type": "string" },
+              "tradeoff": { "type": "string", "description": "备选方案的取舍" }
+            }
+          },
+          "description": "备选方案与取舍"
+        }
+      }
+    },
+    "rationale": { "type": "string", "description": "理由与关键取舍" },
+    "acceptance_criteria": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "可被研发实现/测试观察的验收标准" },
+    "owner": { "type": "string", "description": "owner 标识" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "source_refs": { "type": "array", "items": { "type": "string" }, "description": "来源锚定：材料链接/文件路径" }
+  }
+}

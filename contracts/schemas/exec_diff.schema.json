@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "exec_diff",
+  "title": "执行 diff",
+  "description": "编码执行叶片的产出物：变更摘要。交付前必须过本 schema（6 步闭环③→⑤）。",
+  "type": "object",
+  "required": ["schema_version", "plan_id", "leaf", "changes", "status", "completed_at"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "exec_diff@0.1" },
+    "plan_id": { "type": "string", "description": "对应的 pm_plan.id" },
+    "leaf": { "type": "string", "description": "执行叶片标识" },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "action"],
+        "properties": {
+          "file": { "type": "string" },
+          "action": { "enum": ["create", "modify", "delete", "move"] },
+          "summary": { "type": "string" }
+        }
+      },
+      "minItems": 1
+    },
+    "status": { "enum": ["done", "partial", "blocked"] },
+    "blocker": {
+      "type": "object",
+      "properties": {
+        "category": { "enum": ["mechanical", "directional"] },
+        "summary": { "type": "string" }
+      },
+      "description": "status=blocked 时必填：机械 vs 方向"
+    },
+    "artifacts": { "type": "array", "items": { "type": "string" }, "description": "产出物路径/链接" },
+    "completed_at": { "type": "string", "format": "date-time" }
+  }
+}
