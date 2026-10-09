@@ -25,7 +25,7 @@
 
 - 涉及**项目管理 / 进度 / 待办 / PRD / 评审 / 复盘 / 跨 Agent 交接**场景 → 调用 `project-pm-tracker` Skill（全局 `.user_skills`），由它承担盯项目与产品决策，并执行 GitHub 交接协议。
 - 交接协议：**以 GitHub 仓库为 Agent 间交接项目的媒介**（REQUIREMENTS.md / 交接文档 / 状态记录为权威源）；**完成一次完整对话后、或每次填写项目管理文件时，更新交接内容并推送**——保持「打开仓库即可接任」始终为真。
-- 多 Agent 场景：每个 Agent 都加载 `project-pm-tracker` 到自己的内部文件（AGENTS.md / CLAUDE.md / Agent.md），共享同一套交接协议——交接网络即集群沟通底座（本仓即其设计落地）。
+- 多 Agent 场景：`project-pm-tracker` 作为**全局 Skill 按需调用**（无需写进底层 AGENTS.md / CLAUDE.md），各 Agent 处理项目管理场景时调用即可，共用同一份 Skill——交接网络即集群沟通底座（本仓即其设计落地）。
 
 - 凡是"过不过 / 停不停 / 升级不升级"的判断，全部指向程序实体（`contracts/` 的 schema 与校验器、`orchestrator/` 的图、门、终止条件对象）——不靠 Agent 自觉。
 - 硬执行不进指令文件：本文件与 soul.md 只塑造行为与判断，机器强制在 `contracts/validators` 与 `orchestrator/`。
