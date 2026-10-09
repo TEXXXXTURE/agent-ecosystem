@@ -2,6 +2,7 @@
 
 > 本仓库是 **agent-ecosystem**（Agent 生态集成层）的产品本体：编排 Agent 的集群规则 + 产出物契约 + 6 步协作闭环。
 > 本文件是给所有 Agent（与人类）看的通用门面（薄）。深度人设与执行细则见 [docs/soul.md](docs/soul.md)。
+> **接任本仓任务：先读 [REQUIREMENTS.md](REQUIREMENTS.md)（当前待办需求唯一权威清单），再读 docs/soul.md。**
 
 ## 这个仓库是什么
 
