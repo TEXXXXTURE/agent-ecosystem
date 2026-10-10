@@ -6,6 +6,8 @@
 
 | 路径 | 内容 |
 |---|---|
+| `registry.json` | **产出物契约注册表（规则本体）**：每个产出物的 producer/consumer + 合法 handoff 边；交接只传压缩结论+指针 |
+| `registry.py` | 注册表加载、与叶片一致性对账、handoff 断言（无契约可依时抛 `ContractNotFoundError`） |
 | `schemas/` | 产出物 schema（JSON Schema，语言中立、可跨工具、可进 CI lint） |
 | `validators/` | 校验器实现（`schema_validator.py`）——**全系统唯一强制点**（NFR-02） |
 | 叶片声明 | 见 `../leaves/`（frontmatter Markdown，FR-02 落点） |
@@ -18,6 +20,7 @@
 | `exec_diff` | 执行 diff | 6 步③→⑤（交付前校验） |
 | `failure_reason` | 失败原因（结构化，带回流） | 6 步⑤→③ |
 | `decision_record` | 决策记录（owner 拍板留痕） | 6 步② |
+| `info_stream` | **外部信息流交付物**（黑洞工作流 → 工作台内编排 Agent） | 入 6 步① 之前的输入侧（loop_step 0） |
 
 ## 校验断点（怎么用）
 

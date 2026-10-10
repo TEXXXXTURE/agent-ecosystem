@@ -1,0 +1,51 @@
+{
+  "registry_version": "contract-registry@0.1",
+  "title": "产出物契约注册表",
+  "description": "集成层规则本体：定义每个产出物由谁产出、被谁消费，以及合法的传递边（handoff）。能力单元只通过这里登记的产出物交流，不互相依赖、不融合程序。",
+  "handoff_rule": "交接只传压缩结论 + 指针（artifact 的 summary + refs / id），不镜像正文；产物本体留在产出方，消费方按指针回读。",
+  "artifacts": {
+    "pm_plan": {
+      "title": "PM 方案",
+      "schema": "pm_plan@0.1",
+      "produced_by": ["project-pm-tracker"],
+      "consumed_by": ["owner_gate"],
+      "loop_step": 1
+    },
+    "decision_record": {
+      "title": "决策记录",
+      "schema": "decision_record@0.1",
+      "produced_by": ["owner_gate"],
+      "consumed_by": ["executor"],
+      "loop_step": 2
+    },
+    "exec_diff": {
+      "title": "执行 diff",
+      "schema": "exec_diff@0.1",
+      "produced_by": ["executor"],
+      "consumed_by": ["verify"],
+      "loop_step": 5
+    },
+    "failure_reason": {
+      "title": "失败原因",
+      "schema": "failure_reason@0.1",
+      "produced_by": ["executor", "verify"],
+      "consumed_by": ["executor"],
+      "loop_step": 5
+    },
+    "info_stream": {
+      "title": "外部信息流交付物",
+      "schema": "info_stream@0.1",
+      "produced_by": ["info-stream-pipeline"],
+      "consumed_by": ["orchestrator-agent"],
+      "loop_step": 0
+    }
+  },
+  "handoffs": [
+    { "from": "project-pm-tracker", "to": "owner_gate", "artifact": "pm_plan", "payload": "summary+pointer" },
+    { "from": "owner_gate", "to": "executor", "artifact": "decision_record", "payload": "summary+pointer" },
+    { "from": "executor", "to": "verify", "artifact": "exec_diff", "payload": "summary+pointer" },
+    { "from": "verify", "to": "executor", "artifact": "failure_reason", "payload": "summary+pointer" },
+    { "from": "executor", "to": "executor", "artifact": "failure_reason", "payload": "summary+pointer" },
+    { "from": "info-stream-pipeline", "to": "orchestrator-agent", "artifact": "info_stream", "payload": "summary+pointer" }
+  ]
+}

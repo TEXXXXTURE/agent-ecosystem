@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "info_stream",
+  "title": "信息流交付物",
+  "description": "外部信息流管线的交付契约（PRD FR-04）。由采集/理解侧（黑洞工作流）产出，交工作台内编排 Agent 消费。遵守注册表 handoff 规则：一条 = 压缩结论 + 指针，不镜像正文。",
+  "type": "object",
+  "required": ["schema_version", "id", "generated_at", "items"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "info_stream@0.1" },
+    "id": { "type": "string", "minLength": 1, "description": "交付批次标识，如 stream-20261010-001" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "description": "本批次采集范围",
+      "properties": {
+        "platforms": { "type": "array", "items": { "type": "string" } },
+        "source_lists": { "type": "array", "items": { "type": "string" } },
+        "index_ref": { "type": "string", "description": "统一索引文件指针（scripts/信息流采集.py 产物）" }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["platform", "item_id", "title", "author", "created_at", "url",
+                     "source_list", "summary", "refs", "topics", "new_domain_candidate"],
+        "properties": {
+          "platform": { "type": "string", "enum": ["bilibili", "douyin", "youtube", "x"] },
+          "item_id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "author": { "type": "string" },
+          "created_at": { "type": "string" },
+          "url": { "type": "string", "description": "原文指针（消费方按此回读）" },
+          "source_list": { "type": "string", "enum": ["favorites", "watch_later", "likes", "bookmarks", "playlist"] },
+          "summary": { "type": "string", "minLength": 1, "description": "压缩结论（不内联全文）" },
+          "refs": {
+            "type": "object",
+            "description": "指针集合：产物本体留在产出方",
+            "required": ["note_ref"],
+            "properties": {
+              "note_ref": { "type": "string", "description": "结构化笔记指针（FR-02 产物路径）" },
+              "transcript_ref": { "type": "string", "description": "转写/字幕指针（若有）" },
+              "index_ref": { "type": "string", "description": "统一索引内该条目的定位" }
+            }
+          },
+          "topics": {
+            "type": "object",
+            "description": "主题标签（FR-03 汇总产物）",
+            "required": ["main"],
+            "properties": {
+              "main": { "type": "string", "description": "一级主题编号，如 2" },
+              "sub": { "type": "string", "description": "二级主题编号，如 2.1" },
+              "tags": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "new_domain_candidate": { "type": "boolean", "description": "可能的新领域候选标记（本契约只留位，由 FR-05 比对环节填写）" },
+          "new_domain_hint": { "type": "string", "description": "候选新领域的简述（new_domain_candidate 为 true 时有意义）" }
+        }
+      }
+    }
+  }
+}
