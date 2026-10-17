@@ -13,7 +13,7 @@
 |---|---|---|
 | ① AI PM / 产品 Agent | ✅ | project-pm-tracker 叶片；方案产出物 schema（`contracts/schemas/pm_plan.schema.json`）已有 |
 | ② 原型规划（Figma API） | 🔧 | **新增环节**（见 R1）：Figma API 插件 → CLI 端原型规划 → 截图回传确认 |
-| ③ 契约注册表 | ❌ | 设计已定（写死"谁传给谁"，衔接即督促），规则本体未定稿（见 R2） |
+| ③ 契约注册表 | ✅ | 2026-10-09 定稿：`registry.json`（producer/consumer+handoff 边）+ `registry.py`（对账+断言），17 项测试覆盖，见 R2 |
 | ④ 编码 / 执行 Agent | ✅ | PI / dsh / Codex / Hermes 等 CLI Agent 已在用 |
 | ⑤ 互审 Agent | ❌ | 只有一次性外部评审规则雏形，无常驻循环角色（见 R3） |
 | ⑥ 修订 → 复核 | ❌ | 处置追踪列 + 修订即重审未落地（见 R4） |
@@ -32,12 +32,11 @@
 - **验收**：闭环设计图与 soul.md 中出现原型环节；原型产出物有 schema 可校验。
 - **关联**：`docs/soul.md`、`contracts/schemas/`、闭环设计图。
 
-### R2 · 契约注册表定稿
-- **目标**：把"谁传给谁"写成可执行的契约注册表（衔接本身即督促，不靠 Agent 自觉）。
-- **现状**：`contracts/registry.json` 与叶片声明有雏形；衔接契约未定稿。
-- **待办**：① 定稿注册表格式（叶片声明 + handoff_description）；② 方案产出物 schema 先行，逐环节补齐输入/输出契约；③ 交接只传压缩结论 + 指针。
-- **验收**：任一环节的产出物无契约可依时，路由/校验器能显式报错。
-- **关联**：`contracts/registry.json`、`orchestrator/router.py`。
+### R2 · 契约注册表定稿 ✅（2026-10-09 完成）
+- **交付**：`contracts/registry.json`（规则本体：4 类产出物的 producer/consumer + 5 条 handoff 边；handoff_rule=只传压缩结论+指针）+ `contracts/registry.py`（加载/结构校验、与 leaves 一致性对账 `validate_with_leaves`、handoff 断言 `assert_handoff`）。
+- **验收实测**：新增 `tests/test_registry.py` 17 例，全仓 **42 passed**；合法 handoff 通过，未登记产出物/错误 producer/consumer/缺边均抛 `ContractNotFoundError`；注册表与真实叶片对账零漂移；外部原始材料放行。lint OK。
+- **语义约定**：系统内产出物必须登记；外部原始输入材料（project_context 等）不作为产出物登记。
+- **后续**：新增执行叶片后，经 `validate_with_leaves` 自动纳入对账。
 
 ### R3 · 互审 Agent 实体（常驻循环角色）
 - **目标**：把互审从"一次性外部评审"升级为闭环内**常驻循环角色**——独立、无记忆、新眼睛，事件驱动唤醒。
